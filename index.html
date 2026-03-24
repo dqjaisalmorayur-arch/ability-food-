@@ -1,131 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ability Foundation Food Ordering</title>
+    <title>Ability Foundation Food Hub</title>
     <style>
         :root { --blue: #0288d1; --green: #8bc34a; --text: #000; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #ffffff; color: var(--text); }
-        
-        /* കാഴ്ചക്കാർക്ക് എളുപ്പത്തിൽ കാണാൻ വലിയ അക്ഷരങ്ങൾ */
-        .header { background: white; text-align: center; padding: 20px; border-bottom: 6px solid var(--green); }
-        .logo { width: 100px; margin-bottom: 10px; }
-        .header h1 { margin: 0; color: var(--blue); font-size: 28px; }
-
-        .top-bar { display: flex; justify-content: space-between; padding: 10px 20px; background: #eee; border-bottom: 1px solid #ccc; }
-        .btn-lang { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 18px; }
-        .btn-admin { background: #333; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
-
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #ffffff; color: var(--text); text-align: center; }
+        .header { background: white; padding: 20px; border-bottom: 6px solid var(--green); }
+        .logo { width: 100px; margin-bottom: 10px; border-radius: 50%; border: 2px solid var(--green); }
+        .top-bar { display: flex; justify-content: space-between; padding: 10px; background: #f0f0f0; }
+        .btn { padding: 10px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .btn-lang { background: var(--blue); color: white; }
         .container { max-width: 900px; margin: 20px auto; padding: 15px; }
-        
-        /* മെനു ഗ്രിഡ് */
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .food-card { background: #f1f8e9; border: 3px solid #ddd; border-radius: 20px; padding: 20px; text-align: center; transition: 0.3s; }
-        .food-card:hover { border-color: var(--green); }
-        .food-card h3 { font-size: 24px; margin: 10px 0; color: var(--blue); }
-        .price { font-size: 26px; font-weight: bold; color: #d32f2f; display: block; margin-bottom: 15px; }
-        
+        .card { background: #f9f9f9; border: 3px solid #ddd; border-radius: 20px; padding: 20px; }
+        .card img { width: 120px; height: 120px; object-fit: contain; }
+        .price { font-size: 26px; font-weight: bold; color: #d32f2f; display: block; margin: 15px 0; }
         .buy-btn { background: var(--green); color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; }
-
-        /* മോഡൽ */
-        .modal { background: white; position: fixed; top: 5%; left: 5%; right: 5%; bottom: 5%; padding: 20px; border-radius: 20px; border: 4px solid var(--blue); z-index: 1000; overflow-y: auto; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; }
+        .modal { background: white; position: fixed; top: 5%; left: 5%; right: 5%; bottom: 5%; padding: 20px; border-radius: 20px; border: 4px solid var(--blue); z-index: 1000; overflow-y: auto; text-align: left; }
         .hidden { display: none; }
-
-        input, select { width: 100%; padding: 18px; margin: 10px 0; border: 2px solid #333; border-radius: 10px; font-size: 18px; box-sizing: border-box; }
-        label { font-weight: bold; font-size: 18px; display: block; margin-top: 15px; }
-
-        .btn-pay { background: var(--blue); color: white; border: none; padding: 20px; width: 100%; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; margin: 10px 0; }
-        .btn-confirm { background: var(--green); color: white; border: none; padding: 20px; width: 100%; border-radius: 12px; font-size: 22px; font-weight: bold; cursor: pointer; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; }
+        input, select { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #333; border-radius: 10px; font-size: 18px; box-sizing: border-box; }
+        label { font-weight: bold; font-size: 18px; display: block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="top-bar">
-    <button class="btn-lang" onclick="toggleLang()" id="langBtn">മലയാളം</button>
-    <button class="btn-admin" onclick="openAdmin()">Settings</button>
+    <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">മലയാളം</button>
+    <button class="btn" onclick="openAdmin()" style="background:#555; color:white;">Settings</button>
 </div>
 
 <div class="header">
-    <img src="https://i.ibb.co/XkyVzLh/ability-logo.jpg" class="logo" alt="Logo">
+    <!-- ലോഗോ ശരിയാക്കി -->
+    <img src="https://i.ibb.co/XkyVzLh/ability-logo.jpg" class="logo" alt="Ability Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/706/706164.png'">
     <h1 id="hTitle">Ability Foundation</h1>
     <p id="hSub" style="font-weight: bold;">Food Ordering Service</p>
 </div>
 
 <div class="container">
-    <div id="loading" style="text-align: center; padding: 50px; font-size: 20px;">Loading Menu... Please wait.</div>
+    <div id="loading" style="padding: 50px; font-size: 20px; font-weight: bold;">
+        Loading Menu... Please wait.
+    </div>
     <div id="menu-container" class="menu-grid"></div>
 </div>
 
 <div id="overlay" class="overlay hidden" onclick="closeModal()"></div>
 
-<!-- ഓർഡർ മോഡൽ -->
 <div id="order-modal" class="modal hidden">
-    <h2 id="item-title" style="text-align: center; color: var(--blue);"></h2>
-    
-    <label id="lbl-name">Name / പേര്:</label>
-    <input type="text" id="custName" placeholder="Enter your name">
-    
-    <label id="lbl-phone">Phone / ഫോൺ:</label>
+    <h2 id="item-title" style="color: var(--blue); text-align: center;"></h2>
+    <label id="lbl-name">നിങ്ങളുടെ പേര് (Name):</label>
+    <input type="text" id="custName" placeholder="Enter name">
+    <label id="lbl-phone">ഫോൺ നമ്പർ (Phone):</label>
     <input type="tel" id="custPhone" placeholder="Mobile number">
-
-    <label id="lbl-dept">Department / ഡിപ്പാർട്ട്മെന്റ്:</label>
+    <label id="lbl-dept">ഡിപ്പാർട്ട്മെന്റ് (Dept):</label>
     <select id="custDept"></select>
-
-    <label id="lbl-pay">Payment / പെയ്‌മെന്റ് രീതി:</label>
-    <select id="payMethod" onchange="checkPayMethod()">
-        <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+    <label id="lbl-pay">പെയ്‌മെന്റ് രീതി (Payment):</label>
+    <select id="payMethod">
+        <option value="Cash on Delivery">Cash on Delivery</option>
         <option value="Online Payment">Online Payment (UPI)</option>
     </select>
-
-    <div id="upi-section" class="hidden" style="text-align: center; background: #e3f2fd; padding: 15px; border-radius: 15px;">
-        <p style="color: var(--blue); font-weight: bold;" id="payStep1">ഘട്ടം 1: താഴെയുള്ള ബട്ടൺ അമർത്തി പണമടയ്ക്കുക</p>
-        <button class="btn-pay" onclick="payWithUPI()" id="btnPayNow">PAY NOW WITH UPI</button>
-        <p style="font-size: 14px;" id="payStep2">ഘട്ടം 2: പണമടച്ച ശേഷം ഓർഡർ അയക്കുക</p>
-    </div>
-
-    <button class="btn-confirm" onclick="confirmOrder()" id="btnSubmit">CONFIRM & SEND ORDER</button>
-    <button onclick="closeModal()" style="width: 100%; padding: 10px; margin-top: 10px; border: none; background: #999; color: white; border-radius: 10px;">Back</button>
-</div>
-
-<!-- അഡ്മിൻ പാനൽ -->
-<div id="admin-modal" class="modal hidden">
-    <h2 style="text-align: center;">Admin Settings</h2>
-    <label>WhatsApp Number (91 ചേർക്കുക):</label>
-    <input type="text" id="setWA" value="919000000000">
-    <label>UPI ID (പണം ലഭിക്കാൻ):</label>
-    <input type="text" id="setUPI" value="ability@upi">
-    <label>Departments (കോമ ഉപയോഗിക്കുക):</label>
-    <input type="text" id="setDepts" value="Admin,Kitchen,IT,Hostel,Rehab">
-    <label>Admin Password:</label>
-    <input type="text" id="setPass" value="1234">
-    
-    <button class="btn-confirm" onclick="saveSettings()">SAVE SETTINGS</button>
-    <button onclick="closeModal()" style="width: 100%; padding: 10px; margin-top: 10px; border: none; background: #999; color: white; border-radius: 10px;">Exit</button>
+    <button class="buy-btn" onclick="sendOrder()" id="btnConfirm">CONFIRM ORDER</button>
+    <button onclick="closeModal()" style="width:100%; margin-top:15px; background:none; border:none; color:red; font-size:18px; cursor:pointer;">Close</button>
 </div>
 
 <script>
-    // ഗൂഗിൾ ഷീറ്റ് ലിങ്ക്
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/1IcDJw8pfuELxj78QXGrA19p49hxcIrRZGBHHvxuCFYY/export?format=csv';
+    // നിങ്ങളുടെ ഗൂഗിൾ ഷീറ്റിൽ നിന്ന് ഡാറ്റ എടുക്കാനുള്ള ലിങ്ക്
+    const SHEET_ID = '1IcDJw8pfuELxj78QXGrA19p49hxcIrRZGBHHvxuCFYY';
+    const JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
-    // ഭാഷാ വിവരങ്ങൾ
-    const texts = {
-        en: { title: "Ability Foundation", sub: "Food Ordering Service", buy: "ORDER NOW", btnSubmit: "CONFIRM & SEND ORDER", lang: "മലയാളം" },
-        ml: { title: "എബിലിറ്റി ഫൗണ്ടേഷൻ", sub: "ഫുഡ് സർവീസ് സെന്റർ", buy: "ഓർഡർ ചെയ്യുക", btnSubmit: "ഓർഡർ അയക്കുക", lang: "English" }
-    };
-
-    let currentLang = 'en';
     let menuItems = [];
     let selectedItem = null;
+    let config = JSON.parse(localStorage.getItem('ability_final_v1')) || { wa: "919000000000", upi: "ability@upi", pass: "1234", depts: ["Admin", "Kitchen", "IT", "Hostel"] };
 
-    // ലോക്കൽ സെറ്റിംഗ്സ്
-    let config = JSON.parse(localStorage.getItem('ability_pro_v1')) || {
-        wa: "919000000000",
-        upi: "ability@upi",
-        pass: "1234",
-        depts: ["Admin", "Kitchen", "IT Section", "Hostel"]
-    };
-
-    // ഷീറ്റിൽ നിന്ന് ഡാറ്റ എടുക്കുന്നു
     async function loadMenu() {
+        try {
+            const res = await fetch(JSON_URL);
+            const text = await res.text();
+            // ഗൂഗിൾ നൽകുന്ന JSON വൃത്തിയാക്കുന്നു
+            const json = JSON.parse(text.substr(47).slice(0, -2));
+            const rows = json.table.rows;
+
+            menuItems = rows.map(row => ({
+                name: row.c[0] ? row.c[0].v : "",
+                price: row.c[1] ? row.c[1].v : "",
+                img: row.c[2] ? row.c[2].v : ""
+            })).filter(i => i.name && i.name !== "ItemName");
+
+            document.getElementById('loading').classList.add('hidden');
+            renderMenu();
+        } catch (e) {
+            document.getElementById('loading').innerHTML = "ഷീറ്റിൽ നിന്ന് വിവരങ്ങൾ ലഭിക്കുന്നില്ല. <br> ആപ്പിൽ 'Manage access' പോയി 'Anyone with link' ആക്കിയിട്ടുണ്ടെന്ന് ഉറപ്പുവരുത്തുക.";
+        }
+    }
+
+    function renderMenu() {
+        const container = document.getElementById('menu-container');
+        container.innerHTML = "";
+        menuItems.forEach((item, index) => {
+            container.innerHTML += `
+                <div class="card">
+                    <img src="${item.img || 'https://cdn-icons-png.flaticon.com/512/706/706164.png'}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/706/706164.png'">
+                    <h3>${item.name}</h3>
+                    <span class="price">₹${item.price}</span>
+                    <button class="buy-btn" onclick="openOrder(${index})">ORDER NOW</button>
+                </div>
+            `;
+        });
+    }
+
+    function openOrder(index) {
+        selectedItem = menuItems[index];
+        document.getElementById('item-title').innerText = selectedItem.name + " - ₹" + selectedItem.price;
+        document.getElementById('custDept').innerHTML = config.depts.map(d => `<option value="${d}">${d}</option>`).join('');
+        document.getElementById('order-modal').classList.remove('hidden');
+        document.getElementById('overlay').classList.remove('hidden');
+    }
+
+    function sendOrder() {
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custPhone').value;
+        const dept = document.getElementById('custDept').value;
+        const pay = document.getElementById('payMethod').value;
+        if(!name || !phone) return alert("ദയവായി പേരും നമ്പറും നൽകുക");
+
+        const msg = `*NEW ORDER*%0AItem: ${selectedItem.name}%0APrice: ₹${selectedItem.price}%0AName: ${name}%0ADept: ${dept}%0APayment: ${pay}`;
+        window.open(`https://wa.me/${config.wa}?text=${msg}`, '_blank');
+        closeModal();
+    }
+
+    function closeModal() {
+        document.getElementById('order-modal').classList.add('hidden');
+        document.getElementById('overlay').classList.add('hidden');
+    }
+
+    function openAdmin() {
+        const p = prompt("Admin Password:");
+        if(p === config.pass) {
+            const n = prompt("WhatsApp (91 ചേർക്കുക):", config.wa);
+            const u = prompt("UPI ID:", config.upi);
+            if(n && u) {
+                config.wa = n; config.upi = u;
+                localStorage.setItem('ability_final_v1', JSON.stringify(config));
+                alert("Saved!");
+            }
+        }
+    }
+
+    function toggleLang() {
+        const isEng = document.getElementById('langBtn').innerText === "മലയാളം";
+        document.getElementById('langBtn').innerText = isEng ? "English" : "മലയാളം";
+        document.getElementById('hTitle').innerText = isEng ? "എബിലിറ്റി ഫൗണ്ടേഷൻ" : "Ability Foundation";
+        document.getElementById('hSub').innerText = isEng ? "ഫുഡ് സർവീസ് സെന്റർ" : "Food Ordering Service";
+    }
+
+    loadMenu();
+</script>
+</body>
+</html>
