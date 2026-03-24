@@ -3,174 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ability Foundation Food Hub</title>
+    <title>Ability Foundation - Secure Food Order</title>
     <style>
-        :root { --blue: #0288d1; --green: #8bc34a; --text: #000; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #ffffff; color: var(--text); text-align: center; }
-        .header { background: white; padding: 20px; border-bottom: 6px solid var(--green); }
-        .logo { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--green); margin-bottom: 10px; object-fit: cover; }
-        .top-bar { display: flex; justify-content: space-between; padding: 10px; background: #f4f4f4; border-bottom: 1px solid #ddd; }
-        .btn { padding: 10px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; }
-        .btn-lang { background: var(--blue); color: white; }
-        .container { max-width: 900px; margin: 20px auto; padding: 15px; }
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .card { background: #f9f9f9; border: 3px solid #ddd; border-radius: 20px; padding: 15px; transition: 0.3s; }
-        .card img { width: 120px; height: 120px; object-fit: contain; border-radius: 10px; }
-        .price { font-size: 26px; font-weight: bold; color: #d32f2f; display: block; margin: 10px 0; }
-        .buy-btn { background: var(--green); color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; }
+        :root { --blue: #0288d1; --green: #2e7d32; --red: #d32f2f; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #fdfdfd; color: #000; text-align: center; }
+        .header { background: white; padding: 15px; border-bottom: 5px solid var(--green); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .logo { width: 90px; border-radius: 50%; border: 2px solid var(--green); }
+        .top-bar { display: flex; justify-content: space-between; padding: 10px; background: #eeeeee; }
+        .container { max-width: 800px; margin: auto; padding: 15px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
+        .card { background: white; border: 2px solid #ddd; border-radius: 15px; padding: 15px; box-shadow: 0 3px 6px rgba(0,0,0,0.05); }
+        .card img { width: 100%; height: 110px; object-fit: contain; }
+        .price { font-size: 22px; font-weight: bold; color: var(--red); display: block; margin: 8px 0; }
+        .buy-btn { background: var(--green); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
         .modal { background: white; position: fixed; top: 2%; left: 2%; right: 2%; bottom: 2%; padding: 20px; border-radius: 20px; border: 4px solid var(--blue); z-index: 1000; overflow-y: auto; text-align: left; }
         .hidden { display: none; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; }
-        input, select { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #333; border-radius: 10px; font-size: 18px; box-sizing: border-box; }
-        label { font-weight: bold; font-size: 18px; display: block; margin-top: 10px; }
-        .pay-area { background: #e3f2fd; padding: 15px; border-radius: 15px; text-align: center; margin-top: 10px; border: 2px dashed var(--blue); }
+        input, select { width: 100%; padding: 15px; margin: 8px 0; border: 2px solid #333; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .pay-box { background: #e3f2fd; padding: 15px; border-radius: 15px; border: 2px dashed var(--blue); margin: 10px 0; text-align: center; }
+        .confirm-btn { background: var(--green); color: white; padding: 18px; width: 100%; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .confirm-btn:disabled { background: #ccc; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
 <div class="top-bar">
-    <button class="btn btn-lang" onclick="toggleLang()" id="langBtn">മലയാളം</button>
-    <button class="btn" onclick="openAdmin()" style="background:#333; color:white;">Settings</button>
+    <button class="buy-btn" style="width: auto; background: var(--blue);" onclick="toggleLang()" id="langBtn">മലയാളം</button>
+    <button class="buy-btn" style="width: auto; background: #333;" onclick="openAdmin()">Settings</button>
 </div>
 
 <div class="header">
     <img src="https://i.ibb.co/XkyVzLh/ability-logo.jpg" class="logo" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/706/706164.png'">
-    <h1 id="hTitle">Ability Foundation</h1>
-    <p id="hSub" style="font-weight: bold;">Food Service Center</p>
+    <h1 id="hTitle" style="margin:5px 0; font-size: 22px; color: var(--blue);">Ability Foundation</h1>
+    <p id="hSub" style="margin:0; font-weight: bold; font-size: 14px;">Food Service Ordering</p>
 </div>
 
 <div class="container">
-    <div id="loading-msg" style="padding: 30px; font-size: 18px; font-weight: bold; color: #666;">
-        ഭക്ഷ്യവിവരങ്ങൾ ശേഖരിക്കുന്നു... (Loading Menu)
-    </div>
+    <div id="status-msg" style="padding: 30px; font-weight: bold; color: #666;">Loading Menu Data...</div>
     <div id="menu-container" class="menu-grid"></div>
 </div>
 
 <div id="overlay" class="overlay hidden" onclick="closeModal()"></div>
 
 <div id="order-modal" class="modal hidden">
-    <h2 id="item-title" style="text-align: center; color: var(--blue);"></h2>
+    <h2 id="item-title" style="text-align: center; color: var(--blue); margin-top: 0;"></h2>
+    
     <label id="lbl-name">നിങ്ങളുടെ പേര് (Name):</label>
-    <input type="text" id="custName" placeholder="Enter name">
+    <input type="text" id="custName" placeholder="Enter Name">
+    
     <label id="lbl-phone">ഫോൺ നമ്പർ (Phone):</label>
-    <input type="tel" id="custPhone" placeholder="Mobile number">
+    <input type="tel" id="custPhone" placeholder="Mobile Number">
+
     <label id="lbl-dept">ഡിപ്പാർട്ട്മെന്റ് (Department):</label>
     <select id="custDept"></select>
+
     <label id="lbl-pay">പെയ്‌മെന്റ് രീതി (Payment):</label>
-    <select id="payMethod" onchange="togglePayUI()">
-        <option value="Cash on Delivery">Cash on Delivery</option>
+    <select id="payMethod" onchange="handlePaymentSelection()">
+        <option value="Cash on Delivery">Cash on Delivery (COD)</option>
         <option value="Online Payment">Online Payment (UPI)</option>
     </select>
-    <div id="upi-box" class="hidden pay-area">
-        <p id="pay-text">താഴെ കാണുന്ന ബട്ടൺ അമർത്തി പണമടയ്ക്കുക</p>
-        <button class="btn" style="background:var(--blue); color:white; width:100%; padding:15px; font-size:18px;" onclick="doUPI()">PAY NOW WITH UPI</button>
+
+    <div id="online-ui" class="hidden pay-box">
+        <p style="color:var(--blue); font-weight:bold;" id="txt-step1">Step 1: താഴെ കാണുന്ന ബട്ടൺ അമർത്തി പണമടയ്ക്കുക</p>
+        <button class="buy-btn" style="background:var(--blue);" onclick="initiatePayment()">PAY WITH GPAY/PHONEPE</button>
+        <p style="margin-top:15px; font-weight:bold; color:var(--red);" id="txt-step2">Step 2: പണമടച്ച ശേഷം കിട്ടുന്ന 12 അക്ക Transaction ID (UTR) താഴെ നൽകുക</p>
+        <input type="number" id="utrNumber" placeholder="Enter 12-digit UTR Number" oninput="validateUTR()">
     </div>
-    <button class="buy-btn" onclick="sendOrder()" style="margin-top:20px;" id="btnConfirm">CONFIRM ORDER</button>
-    <button onclick="closeModal()" style="width:100%; margin-top:15px; background:none; border:none; color:red; cursor:pointer; font-size:18px;">Close</button>
+
+    <button class="confirm-btn" id="finalBtn" onclick="sendOrder()">CONFIRM & SEND ORDER</button>
+    <button onclick="closeModal()" style="width:100%; margin-top:10px; border:none; background:none; color:red; cursor:pointer; font-weight:bold;">Cancel</button>
 </div>
 
 <script>
-    // ഗൂഗിൾ ഷീറ്റ് ഐഡി
     const SHEET_ID = '1IcDJw8pfuELxj78QXGrA19p49hxcIrRZGBHHvxuCFYY';
-    // CSV ലിങ്ക് (ഇതാണ് ഏറ്റവും വേഗതയുള്ള വഴി)
-    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0&t=${new Date().getTime()}`;
+    const DATA_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&t=${Date.now()}`;
 
     let menuItems = [];
     let depts = [];
     let selectedItem = null;
     let currentLang = 'en';
+    let paidClicked = false;
 
-    // അഡ്മിൻ സെറ്റിംഗ്സ് (Local Storage)
-    let config = JSON.parse(localStorage.getItem('ability_final_fix')) || { 
-        wa: "919000000000", 
-        upi: "ability@upi", 
+    let config = JSON.parse(localStorage.getItem('ability_v7_secure')) || { 
+        wa: "919746859576", 
+        upi: "dqjaisalmorayur@okicici", 
         pass: "1234" 
     };
 
-    // ബാക്കപ്പ് ഡാറ്റ (ഷീറ്റ് ലോഡ് ആയില്ലെങ്കിൽ ഇത് കാണിക്കും)
-    const backupItems = [
-        { name: "Coffee", price: "10", img: "https://cdn-icons-png.flaticon.com/512/3063/3063822.png" },
-        { name: "Banana Fry", price: "10", img: "https://cdn-icons-png.flaticon.com/512/2515/2515183.png" }
-    ];
-    const backupDepts = ["Office", "Girls Hostel", "Boys Hostel", "Kitchen", "IT Section"];
-
     async function loadData() {
         try {
-            const res = await fetch(CSV_URL);
-            const data = await res.text();
-            
-            // CSV ഡാറ്റ പ്രോസസ്സ് ചെയ്യുന്നു
-            const rows = data.split('\n').map(row => row.split(','));
-            
+            const res = await fetch(DATA_URL);
+            const text = await res.text();
+            const json = JSON.parse(text.substr(47).slice(0, -2));
+            const rows = json.table.rows;
+
             menuItems = [];
             depts = [];
 
-            rows.forEach((cols, index) => {
-                if (index === 0) return; // തലക്കെട്ട് ഒഴിവാക്കുന്നു
-                
-                // Column A (Name), B (Price), C (Image)
-                if (cols[0] && cols[0].trim() !== "" && cols[0] !== "ItemName") {
-                    menuItems.push({ 
-                        name: cols[0].replace(/"/g, ""), 
-                        price: cols[1] ? cols[1].replace(/"/g, "") : "0", 
-                        img: cols[2] ? cols[2].replace(/"/g, "") : "" 
-                    });
-                }
-                
-                // Column E (Department)
-                if (cols[4] && cols[4].trim() !== "" && cols[4].toLowerCase().trim() !== "department") {
-                    depts.push(cols[4].replace(/"/g, "").trim());
-                }
+            rows.forEach((row) => {
+                const name = row.c[0] ? row.c[0].v : null;
+                const price = row.c[1] ? row.c[1].v : null;
+                const img = row.c[2] ? row.c[2].v : null;
+                const dept = row.c[4] ? row.c[4].v : null;
+
+                if (name && name !== "ItemName") menuItems.push({ name, price, img });
+                if (dept && dept.toLowerCase() !== "department") depts.push(dept);
             });
 
-            if (menuItems.length === 0) throw new Error("No data");
-            if (depts.length === 0) depts = backupDepts;
-
-            displayMenu();
+            document.getElementById('status-msg').classList.add('hidden');
+            renderMenu();
         } catch (e) {
-            console.log("Using backup data");
-            menuItems = backupItems;
-            depts = backupDepts;
-            displayMenu();
+            document.getElementById('status-msg').innerHTML = "സെർവർ ബിസിയാണ്. പേജ് റീഫ്രഷ് ചെയ്യുക.";
         }
     }
 
-    function displayMenu() {
-        document.getElementById('loading-msg').classList.add('hidden');
+    function renderMenu() {
         const container = document.getElementById('menu-container');
         container.innerHTML = "";
-        
         menuItems.forEach((item, index) => {
             container.innerHTML += `
                 <div class="card">
                     <img src="${item.img || 'https://cdn-icons-png.flaticon.com/512/706/706164.png'}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/706/706164.png'">
-                    <h3>${item.name}</h3>
+                    <h3 style="font-size:18px; margin:10px 0;">${item.name}</h3>
                     <span class="price">₹${item.price}</span>
                     <button class="buy-btn" onclick="openOrder(${index})">${currentLang === 'en' ? 'ORDER' : 'ഓർഡർ'}</button>
-                </div>
-            `;
+                </div>`;
         });
     }
 
     function openOrder(index) {
         selectedItem = menuItems[index];
+        paidClicked = false;
         document.getElementById('item-title').innerText = selectedItem.name + " - ₹" + selectedItem.price;
-        
-        const deptSelect = document.getElementById('custDept');
-        deptSelect.innerHTML = depts.map(d => `<option value="${d}">${d}</option>`).join('');
-        
+        document.getElementById('custDept').innerHTML = depts.map(d => `<option value="${d}">${d}</option>`).join('');
         document.getElementById('order-modal').classList.remove('hidden');
         document.getElementById('overlay').classList.remove('hidden');
+        document.getElementById('payMethod').value = "Cash on Delivery";
+        handlePaymentSelection();
     }
 
-    function togglePayUI() {
-        const pay = document.getElementById('payMethod').value;
-        document.getElementById('upi-box').className = (pay === 'Online Payment') ? "pay-area" : "hidden";
+    function handlePaymentSelection() {
+        const method = document.getElementById('payMethod').value;
+        const onlineUI = document.getElementById('online-ui');
+        const finalBtn = document.getElementById('finalBtn');
+
+        if (method === "Online Payment") {
+            onlineUI.classList.remove('hidden');
+            finalBtn.disabled = true; // പണമടയ്ക്കുന്നത് വരെ ബട്ടൺ ഓഫ് ആക്കുന്നു
+        } else {
+            onlineUI.classList.add('hidden');
+            finalBtn.disabled = false;
+        }
     }
 
-    function doUPI() {
-        const amt = selectedItem.price.replace(/[^0-9]/g, '');
-        window.location.href = `upi://pay?pa=${config.upi}&pn=AbilityFoundation&am=${amt}&cu=INR`;
+    function initiatePayment() {
+        const url = `upi://pay?pa=${config.upi}&pn=AbilityFoundation&am=${selectedItem.price}&cu=INR`;
+        window.location.href = url;
+        paidClicked = true;
+        validateUTR();
+    }
+
+    function validateUTR() {
+        const utr = document.getElementById('utrNumber').value;
+        const finalBtn = document.getElementById('finalBtn');
+        // 12 അക്കം ഉണ്ടെങ്കിൽ മാത്രം ഓർഡർ ബട്ടൺ ഓൺ ആകും
+        if (document.getElementById('payMethod').value === "Online Payment") {
+            finalBtn.disabled = !(utr.length === 12 && paidClicked);
+        }
     }
 
     function sendOrder() {
@@ -178,13 +177,16 @@
         const phone = document.getElementById('custPhone').value;
         const dept = document.getElementById('custDept').value;
         const pay = document.getElementById('payMethod').value;
+        const utr = document.getElementById('utrNumber').value;
+
+        if(!name || !phone) return alert("പേരും ഫോണും നൽകുക!");
+
+        let msg = `*NEW ORDER - ABILITY*%0A--------------------------%0A*Item:* ${selectedItem.name}%0A*Price:* ₹${selectedItem.price}%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Dept:* ${dept}%0A*Payment:* ${pay}`;
         
-        if(!name || !phone) {
-            alert(currentLang === 'en' ? "Enter Name and Phone" : "പേരും നമ്പറും നൽകുക");
-            return;
+        if(pay === "Online Payment") {
+            msg += `%0A*UTR ID:* ${utr}%0A_(Please verify payment manually)_`;
         }
 
-        const msg = `*NEW ORDER*%0AItem: ${selectedItem.name}%0APrice: ₹${selectedItem.price}%0AName: ${name}%0APhone: ${phone}%0ADept: ${dept}%0APayment: ${pay}`;
         window.open(`https://wa.me/${config.wa}?text=${msg}`, '_blank');
         closeModal();
     }
@@ -193,25 +195,21 @@
         currentLang = (currentLang === 'en') ? 'ml' : 'en';
         document.getElementById('langBtn').innerText = (currentLang === 'en') ? 'മലയാളം' : 'English';
         document.getElementById('hTitle').innerText = (currentLang === 'en') ? 'Ability Foundation' : 'എബിലിറ്റി ഫൗണ്ടേഷൻ';
-        document.getElementById('hSub').innerText = (currentLang === 'en') ? 'Food Service Center' : 'ഫുഡ് സർവീസ് സെന്റർ';
-        
-        document.getElementById('lbl-name').innerText = (currentLang === 'en') ? 'Name / പേര്:' : 'പേര് / Name:';
-        document.getElementById('lbl-phone').innerText = (currentLang === 'en') ? 'Phone / ഫോൺ:' : 'ഫോൺ / Phone:';
-        document.getElementById('lbl-pay').innerText = (currentLang === 'en') ? 'Payment Method:' : 'പെയ്‌മെന്റ് രീതി:';
-        document.getElementById('btnConfirm').innerText = (currentLang === 'en') ? 'CONFIRM ORDER' : 'ഓർഡർ കൺഫേം ചെയ്യുക';
-        
-        displayMenu();
+        document.getElementById('lbl-name').innerText = (currentLang === 'en') ? 'Your Name:' : 'നിങ്ങളുടെ പേര്:';
+        document.getElementById('lbl-phone').innerText = (currentLang === 'en') ? 'Phone Number:' : 'ഫോൺ നമ്പർ:';
+        document.getElementById('btnConfirm').innerText = (currentLang === 'en') ? 'CONFIRM ORDER' : 'ഓർഡർ അയക്കുക';
+        renderMenu();
     }
 
     function openAdmin() {
         const p = prompt("Admin Password:");
         if(p === config.pass) {
-            const n = prompt("WhatsApp (eg: 919048...):", config.wa);
+            const n = prompt("WhatsApp (eg: 919746...):", config.wa);
             const u = prompt("UPI ID:", config.upi);
             if(n && u) {
                 config.wa = n; config.upi = u;
-                localStorage.setItem('ability_final_fix', JSON.stringify(config));
-                alert("Saved!");
+                localStorage.setItem('ability_v7_secure', JSON.stringify(config));
+                alert("Settings Saved!");
                 location.reload();
             }
         }
@@ -223,6 +221,8 @@
     }
 
     loadData();
+    // ഓരോ മിനിറ്റിലും ഡാറ്റ പുതുക്കുന്നു
+    setInterval(loadData, 60000);
 </script>
 </body>
 </html>
